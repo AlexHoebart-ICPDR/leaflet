@@ -34,9 +34,9 @@ Backdrop.
 ## Related modules
 
 The [Leaflet Widget](https://backdropcms.org/project/leaflet_widget)
- utilizes this module's library to input Geospacial data by interactively
- setting markers on a map. Recommended if you don't want to deal with
- [geocoding](https://backdropcms.org/project/geocoder).
+ utilizes this module's library to input values like markers or
+ geometries into [Geofields](https://backdropcms.org/project/geofield) in a
+ user-friendly way.
 
 If you need a *legacy version* of the leaflet library:
  [Leaflet library](https://backdropcms.org/project/leaflet_lib) ships with
@@ -60,13 +60,13 @@ In the settings of the style, select the geofield as the Data Source and
 select a field for Title and Description (which will be rendered in the popup).
 
 As a more powerful alternative, you can use node view modes to be rendered in
-the popup. In the Description field, select "<entire node>" and then select a View mode.
+the popup. In the Description field, select `<entire node>` and then select a View mode.
 
 For a tutorial, please read this (relatively old) blog post
 https://marzeelabs.org/blog/2012-09-24-building-maps-in-drupal-using-leaflet-views
 
 
-## API Usage
+## API Usage (for developers)
 
 Building a map is as simple as calling a single method, `leaflet_build_map()`,
 which takes 3 parameters.
@@ -80,7 +80,7 @@ This is the tricky part. This is an associative array of all the features you
 want to plot on the map. A feature can be a point, linestring, polygon,
 multilinestring, multipolygon, or json object. Additionally, features can be
 grouped into layer groups so they can be controlled together,
-http://leaflet.cloudmade.com/reference.html#layergroup. A feature will look
+https://leafletjs.com/reference.html#layergroup. A feature will look
 something like:
 
 ```php

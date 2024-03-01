@@ -1,11 +1,13 @@
 <?php
-
 /**
  * @file
  * Extension of the Views Plugin Style for Leaflet Map
  * Adapted from the GeoField Map views module and the OpenLayers Views module.
  */
 
+/**
+ * {@inheritdoc}
+ */
 class leaflet_views_plugin_style extends views_plugin_style {
 
   /**
@@ -166,9 +168,7 @@ class leaflet_views_plugin_style extends views_plugin_style {
       '#default_value' => $this->options['name_field'],
     );
 
-    $desc_options = array_merge(array(
-        '' => '',
-    ), $fields);
+    $desc_options = array_merge(array('' => '',), $fields);
 
     // Add an option to render the entire entity using a view mode.
     if (isset($this->entity_type)) {
@@ -257,15 +257,27 @@ class leaflet_views_plugin_style extends views_plugin_style {
     );
 
     $form['zoom'] = leaflet_form_elements('zoom', $this->options);
-    $form['icon'] = leaflet_form_elements('icon', $this->options, array('path' => 'style_options', 'fields' => $fields));
-    $form['vector_display'] = leaflet_form_elements('vector_display', $this->options, array('path' => 'style_options'));
-    $form['tokens'] = leaflet_form_elements('tokens', $this->options, array('weight' => 998, 'entity_type' => $this->entity_type));
+    $form['icon'] = leaflet_form_elements('icon', $this->options, array(
+      'path' => 'style_options',
+      'fields' => $fields,
+    ));
+    $form['vector_display'] = leaflet_form_elements('vector_display', $this->options, array(
+      'path' => 'style_options',
+    ));
+    $form['tokens'] = leaflet_form_elements('tokens', $this->options, array(
+      'weight' => 998,
+      'entity_type' => $this->entity_type,
+    ));
   }
 
   /**
    * Validate the options form.
    */
   public function options_validate(&$form, &$form_state) {
+    if (empty($form_state['values']['style_options'])) {
+      form_set_error('form', t('Insufficient data.'));
+      return;
+    }
     if (!is_numeric($form_state['values']['style_options']['height']) || $form_state['values']['style_options']['height'] < 0) {
       form_error($form['height'], t('Map height needs to be a positive number'));
     }
@@ -366,7 +378,6 @@ class leaflet_views_plugin_style extends views_plugin_style {
       }
       return leaflet_build_map($map, $data, $this->options['height'] . 'px');
     }
-    return;
   }
 
   /**

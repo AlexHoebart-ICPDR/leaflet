@@ -29,8 +29,8 @@ function leaflet_library_info() {
 
   $libraries['leaflet'] = array(
     'title' => t('Leaflet JavaScript Library'),
-    'version' => '1.7.1',
-    'website' => 'http://leafletjs.com/',
+    'version' => '1.9.4',
+    'website' => 'https://leafletjs.com/',
     'js' => array(
       // This setting is needed in order to properly render market images.
       'leaflet_root_url' => array(
@@ -100,7 +100,7 @@ function leaflet_library_info() {
  * Attach Leaflet-required client files and return renderable array for a map.
  *
  * @param array $map
- *   Map definition as returned my leaflet_map_get_info();
+ *   Map definition as returned my leaflet_map_get_info().
  * @param array $features
  *   Associative array of map features.
  * @param string $height
@@ -109,7 +109,7 @@ function leaflet_library_info() {
  * @return array
  *   A renderable array.
  */
-function leaflet_build_map($map, $features = array(), $height = '400px') {
+function leaflet_build_map(array $map, array $features = array(), $height = '400px') {
   $map_id = backdrop_html_id('leaflet_map');
   $build = array(
     '#theme' => 'head_tag',
@@ -151,7 +151,7 @@ function leaflet_build_map($map, $features = array(), $height = '400px') {
   // Load the leaflet library, which includes integration files.
   $build['#attached']['library'][] = array('leaflet', 'leaflet');
 
-  // Let other modules properly attach libraries as well [#2567387]
+  // Let other modules properly attach libraries as well [#2567387].
   backdrop_alter('leaflet_build_map', $build);
 
   return $build;
@@ -163,7 +163,7 @@ function leaflet_build_map($map, $features = array(), $height = '400px') {
  * Load all Leaflet required client files and return markup for a map.
  *
  * @param array $map
- *   Map definition as returned my leaflet_map_get_info();
+ *   Map definition as returned my leaflet_map_get_info().
  * @param array $features
  *   Associative array of map features.
  * @param string $height
@@ -172,7 +172,7 @@ function leaflet_build_map($map, $features = array(), $height = '400px') {
  * @return string
  *   map markup
  */
-function leaflet_render_map($map, $features = array(), $height = '400px') {
+function leaflet_render_map(array $map, array $features = array(), $height = '400px') {
   $build = leaflet_build_map($map, $features, $height);
   return render($build);
 }
@@ -242,7 +242,7 @@ function leaflet_leaflet_map_info() {
         // The "zoomDefault" is only used when no features are present.
         'zoomDefault' => 10,
         'minZoom' => 0,
-        'maxZoom' => 18,
+        'maxZoom' => 19,
         'dragging' => TRUE,
         'touchZoom' => TRUE,
         'scrollWheelZoom' => TRUE,
@@ -256,9 +256,10 @@ function leaflet_leaflet_map_info() {
       ),
       'layers' => array(
         'earth' => array(
-          'urlTemplate' => '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'urlTemplate' => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           'options' => array(
             'attribution' => '<a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap </a> contributors',
+            'maxZoom' => 19,
           ),
         ),
       ),

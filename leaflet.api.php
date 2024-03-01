@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @file
- * API documentation for Administration menu.
+ * API documentation for the Leaflet module.
  */
 
 /**
@@ -13,7 +12,7 @@
  * collection of features.
  *
  * The settings array maps to the settings available to leaflet map object,
- * http://leaflet.cloudmade.com/reference.html#map-properties
+ * https://leafletjs.com/reference.html
  *
  * Layers are the available base layers for the map and, if you enable the
  * layer control, can be toggled on the map.
@@ -44,7 +43,7 @@ function hook_leaflet_map_info() {
       ),
       'layers' => array(
         'earth' => array(
-          'urlTemplate' => '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'urlTemplate' => '//tile.openstreetmap.org/{z}/{x}/{y}.png',
           'options' => array(
             'attribution' => 'OSM Mapnik',
             // The switchZoom controls require multiple layers, referencing one
@@ -63,7 +62,7 @@ function hook_leaflet_map_info() {
           ),
         ),
       ),
-      // Uncomment the lines below to use a custom icon
+      // Uncomment the lines below to use a custom icon.
       // @code
       // 'icon' => array(
       //   'iconUrl'       => '/sites/default/files/icon.png',
@@ -91,7 +90,7 @@ function hook_leaflet_map_info() {
  * @see leaflet_map_get_info()
  * @see hook_leaflet_map_info()
  */
-function hook_leaflet_map_prebuild_alter(&$settings) {
+function hook_leaflet_map_prebuild_alter(array &$settings) {
   $settings['mapId'] = 'my-map-id';
   $settings['features']['icon'] = 'my-icon-url';
 }
