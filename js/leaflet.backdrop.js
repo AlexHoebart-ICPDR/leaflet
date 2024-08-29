@@ -96,11 +96,13 @@
         // load a settings object with all of our map settings
         var settings = {
           'fullscreenControl': true,
+          'zoomControl' : false, // replaced by L.Control.Zoomslider
+          'scaleControl' : {metric: true, imperial: false},
+          'viewcenterControl' : true,
         };
         for (let setting in this.map.settings) {
           settings[setting] = this.map.settings[setting];
         }
-        settings.zoomControl = false; // replaced by L.Control.Zoomslider
 
         // Workaround for Safari bug.
         // @see https://github.com/backdrop-contrib/leaflet/issues/17
@@ -171,10 +173,17 @@
         }
 
         // add scale control //+
-          lMap.addControl(new L.control.scale({imperial: false}));
+        if (this.map.settings.scaleControl) {
+          lMap.addControl(L.control.scale(this.map.settings.scaleControl));
+        }
 
-        // add Zoomslider control //+
-          lMap.addControl(new L.Control.Zoomslider());
+        // add Zoomslider control if no zoomControl is already in place //+
+        if (!this.map.settings.zoomControl) {
+          let zoomsliderControl = new L.Control.Zoomslider();
+          lMap.addControl(zoomsliderControl);
+          // Expose this control via lMap.
+          lMap.zoomsliderControl = zoomsliderControl;
+        }
 
         // Small box with lat/lon coordinates of mouse click event on map.
         var c = new L.Control.Coordinates({
@@ -182,6 +191,8 @@
           precision: 5
         });
         c.addTo(lMap);
+        // Expose this control via lMap.
+        lMap.controlCoordinates = c;
         lMap.on('click', function(e) {
           c.setCoordinates(e);
           // Hide the coordinates box again after 4 seconds.
@@ -202,8 +213,12 @@
           vcLatLng: [0, 0],
           vcZoom: zoom
         });
-        lMap.addControl(viewCenter);
-
+        if (this.map.settings.viewcenterControl) {
+          lMap.addControl(viewCenter);
+          // Expose this control via lMap.
+          lMap.viewcenterControl = viewCenter;
+        }
+        
         // center the map
         if (this.map.center && (this.map.center.force || this.features.length === 0)) {
           lMap.setView(new L.LatLng(this.map.center.lat, this.map.center.lon), zoom);
