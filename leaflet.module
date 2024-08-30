@@ -250,7 +250,7 @@ function leaflet_leaflet_map_info() {
         'touchZoom' => TRUE,
         'scrollWheelZoom' => TRUE,
         'doubleClickZoom' => TRUE,
-        'zoomControl' => TRUE,
+        'zoomControl' => FALSE, // replaced by default by Zoomslider
         'attributionControl' => TRUE,
         'trackResize' => TRUE,
         'fadeAnimation' => TRUE,

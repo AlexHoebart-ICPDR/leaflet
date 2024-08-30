@@ -28,7 +28,7 @@ function leaflet_more_maps_default_settings() {
     // @codingStandardsIgnoreLine
     // 'zoom'               =>  2,
     'zoomAnimation'      => TRUE,
-    'zoomControl'        => TRUE,
+    'zoomControl'        => FALSE, // replaced by default by Zoomslider
   );
   return $default_settings;
 }

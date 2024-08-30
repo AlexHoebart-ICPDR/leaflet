@@ -93,13 +93,14 @@
           popupMinWidth = this.map.popupMinWidth;
         }
 
-        // load a settings object with all of our map settings
+        // Load a settings object with some default map settings.
         var settings = {
           'fullscreenControl': true,
           'zoomControl' : false, // replaced by L.Control.Zoomslider
-          'scaleControl' : {metric: true, imperial: false},
+          'scaleControl' : true,
           'viewcenterControl' : true,
         };
+        // Merge settings provided by module.
         for (let setting in this.map.settings) {
           settings[setting] = this.map.settings[setting];
         }
@@ -137,7 +138,7 @@
               overlays[key] = map_layer;
               break;
             default:
-              if (i === 0 || !this.map.settings.layerControl) {
+              if (i === 0 || !settings.layerControl) {
                 lMap.addLayer(map_layer);
                 i++;
               }
@@ -168,17 +169,17 @@
         overlays = Backdrop.leaflet.addFeatures(lMap, this.features, overlays, popupMinWidth);
 
         // add layer switcher
-        if (this.map.settings.layerControl) {
+        if (settings.layerControl) {
           lMap.addControl(new L.Control.Layers(layers, overlays));
         }
 
         // add scale control //+
-        if (this.map.settings.scaleControl) {
-          lMap.addControl(L.control.scale(this.map.settings.scaleControl));
+        if (settings.scaleControl) {
+          lMap.addControl(L.control.scale(settings.scaleControl));
         }
 
         // add Zoomslider control if no zoomControl is already in place //+
-        if (!this.map.settings.zoomControl) {
+        if (!settings.zoomControl) {
           let zoomsliderControl = new L.Control.Zoomslider();
           lMap.addControl(zoomsliderControl);
           // Expose this control via lMap.
@@ -213,12 +214,12 @@
           vcLatLng: [0, 0],
           vcZoom: zoom
         });
-        if (this.map.settings.viewcenterControl) {
+        if (settings.viewcenterControl) {
           lMap.addControl(viewCenter);
           // Expose this control via lMap.
           lMap.viewcenterControl = viewCenter;
         }
-        
+
         // center the map
         if (this.map.center && (this.map.center.force || this.features.length === 0)) {
           lMap.setView(new L.LatLng(this.map.center.lat, this.map.center.lon), zoom);
