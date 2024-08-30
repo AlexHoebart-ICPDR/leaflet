@@ -124,6 +124,11 @@ function leaflet_build_map(array $map, array $features = array(), $height = '400
     ),
   );
 
+  // Use the smaller zoomControl if map is small
+  if (substr($height,-2,2) == 'px' && (int) $height < 400) {
+    $map['settings']['zoomControl'] = TRUE;
+  }
+
   // Allow map definitions to provide a default icon:
   if (isset($map['icon']['iconUrl'])) {
     foreach ($features as &$feature) {
